@@ -51,7 +51,7 @@ void ttn_register(void (*callback)(uint8_t message));
 //#define SINGLE_CHANNEL_GATEWAY  0
 
 //Uncomment if you always want to see the boot logo at boot time
-#define ALWAYS_SHOW_LOGO
+//#define ALWAYS_SHOW_LOGO
 
 //Uncomment to enable discarding network settings by long pressing second button
 //Used for resetting frame counter, required to be done for migrating TTN v2 -> v3 (or switching applications on TTN)
@@ -63,8 +63,8 @@ void ttn_register(void (*callback)(uint8_t message));
 
 #define DEBUG_PORT              Serial          // Serial debug port
 #define SERIAL_BAUD             115200          // Serial debug baud rate
-#define SLEEP_BETWEEN_MESSAGES  false           // Do sleep between messages
-#define SEND_INTERVAL           (20 * 1000)     // Sleep for these many millis
+#define SLEEP_BETWEEN_MESSAGES  true           // Do sleep between messages
+#define SEND_INTERVAL           (60 * 1000)     // Sleep for these many millis
 #define MESSAGE_TO_SLEEP_DELAY  5000            // Time after message before going to sleep
 #define LOGO_DELAY              5000            // Time to show logo on first boot
 #define LORAWAN_PORT            10              // Port the messages will be sent to

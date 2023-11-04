@@ -38,7 +38,7 @@ bool packetSent, packetQueued;
 
 #if defined(PAYLOAD_USE_FULL)
     // includes number of satellites and accuracy
-    static uint8_t txBuffer[10];
+    static uint8_t txBuffer[14];
 #elif defined(PAYLOAD_USE_CAYENNE)
     // CAYENNE DF
     static uint8_t txBuffer[11] = {0x03, 0x88, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
@@ -94,7 +94,7 @@ void doDeepSleep(uint64_t msecToWake)
     Serial.printf("Entering deep sleep for %llu seconds\n", msecToWake / 1000);
 
     // not using wifi yet, but once we are this is needed to shutoff the radio hw
-    // esp_wifi_stop();
+//    esp_wifi_stop();
 
     screen_off();  // datasheet says this will draw only 10ua
     LMIC_shutdown();  // cleanly shutdown the radio
@@ -210,10 +210,10 @@ void scanI2Cdevice(void)
             Serial.println(" !");
             nDevices++;
 
-            if (addr == SSD1306_ADDRESS) {
-                ssd1306_found = true;
-                Serial.println("ssd1306 display found");
-            }
+            // if (addr == SSD1306_ADDRESS) {
+            //     ssd1306_found = true;
+            //     Serial.println("ssd1306 display found");
+            // }
             if (addr == AXP192_SLAVE_ADDRESS) {
                 axp192_found = true;
                 Serial.println("axp192 PMU found");
@@ -251,6 +251,7 @@ void axp192Init() {
             Serial.println("AXP192 Begin FAIL");
         }
         // axp.setChgLEDMode(LED_BLINK_4HZ);
+        axp.setChgLEDMode(AXP20X_LED_OFF);
         Serial.printf("DCDC1: %s\n", axp.isDCDC1Enable() ? "ENABLE" : "DISABLE");
         Serial.printf("DCDC2: %s\n", axp.isDCDC2Enable() ? "ENABLE" : "DISABLE");
         Serial.printf("LDO2: %s\n", axp.isLDO2Enable() ? "ENABLE" : "DISABLE");
@@ -282,7 +283,7 @@ void axp192Init() {
         axp.enableIRQ(AXP202_VBUS_REMOVED_IRQ | AXP202_VBUS_CONNECT_IRQ | AXP202_BATT_REMOVED_IRQ | AXP202_BATT_CONNECT_IRQ, 1);
         axp.clearIRQ();
 
-        if (axp.isCharging()) {
+        if (axp.isChargeing()) {
             baChStatus = "Charging";
         }
     } else {
